@@ -1,4 +1,4 @@
-package src;
+package app;
 
 import java.util.Scanner;
 
@@ -30,12 +30,10 @@ public class UI {
 
             System.out.println("Generating cover letter . . . ");
             generator.generateCoverLetter();
-            System.out.println("Cover letter has save in the folder " + generator.getOUTPUT_FILE_PATH());
+            System.out.println("Cover letter has been saved in the folder " + generator.getOUTPUT_FILE_DIRECTORY());
 
             run = false;
         }
-
         System.out.println("Goodbye!");
     }
-
 }
