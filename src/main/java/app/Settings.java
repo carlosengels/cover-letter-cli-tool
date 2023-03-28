@@ -5,10 +5,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
+import java.io.*;
 import java.nio.file.Paths;
 
 public class Settings {
@@ -17,22 +16,29 @@ public class Settings {
     private boolean defaultProfile = true;
 
     private String fullName = "FIRST NAME & LAST NAME";
-    private final String settingsSaveFile = "src/main/resources/settings/settings.json";
+    private String settingsSaveFile = "src/main/resources/settings/settings.json";
 
     public Settings() {
-//        try {
-//            Settings savedSettings = new ObjectMapper().readValue(new File(settingsSaveFile), Settings.class);
-//            this.fullName = savedSettings.fullName;
-//        } catch (JsonMappingException e) {
-//            throw new RuntimeException(e);
-//        } catch (JsonParseException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
-    private void saveSettings() {
+    public boolean loadSettings() {
+        Gson gson = new Gson();
+        try (Reader reader = new FileReader(settingsSaveFile)) {
+            Settings settings = gson.fromJson(reader, Settings.class);
+            if (settings == null) {
+                System.out.println("No local save file found.");
+                return true;
+            }
+            this.fullName = settings.getFullName();
+            System.out.println("Hello " + fullName);
+            return settings.isDefaultProfile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveSettings() {
+        //TODO replace with GSON
         try {
             new ObjectMapper().writeValue(Paths.get(settingsSaveFile).toFile(), this);
         } catch (JsonProcessingException e) {
@@ -64,5 +70,9 @@ public class Settings {
 
     public String getSettingsSaveFile() {
         return settingsSaveFile;
+    }
+
+    public void setSettingsSaveFile(String settingsSaveFile) {
+        this.settingsSaveFile = settingsSaveFile;
     }
 }

@@ -6,6 +6,7 @@ public class Main {
         final Generator generator = new Generator(settings);
         final UI ui = new UI(generator, true);
 
+
         ui.run();
     }
 }

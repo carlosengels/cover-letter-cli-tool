@@ -22,7 +22,7 @@ public class UI {
             System.out.println(MAIN_MENU);
             Scanner scanner = new Scanner(System.in);
 
-            if (generator.getSettings().isDefaultProfile()) {
+            if (generator.getSettings().loadSettings()) {
                 System.out.println(CHANGE_SETTINGS);
                 generator.getSettings().setFullName(scanner.nextLine());
                 generator.getSettings().setDefaultProfile(false);

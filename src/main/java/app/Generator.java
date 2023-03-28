@@ -66,7 +66,7 @@ public class Generator {
                 settings.getFullName().replaceAll(" ","-"),
                 position.replaceAll(" ","-"),
                 company.replaceAll(" ","-"),
-                formattedDate());
+                LocalDate.now());
 
         StringBuilder coverLetter = new StringBuilder();
         try {
@@ -85,7 +85,6 @@ public class Generator {
         editedCoverLetter = editedCoverLetter.replaceAll("DATE", formattedDate());
         editedCoverLetter = editedCoverLetter.replaceAll("HIRING_MANAGER", hiringManager);
         editedCoverLetter = editedCoverLetter.replaceAll("FUlL_NAME", settings.getFullName());
-
 
         try {
             File file = new File(newFileName);
@@ -115,7 +114,6 @@ public class Generator {
         }
         String day = dayOfMonth + dayOfMonthSuffix;
         int year = LocalDate.now().getYear();
-
         return String.format("%s %s, %d",month, day, year);
     }
 }
