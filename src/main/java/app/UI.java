@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class UI {
 
     private Generator generator;
-    private final String CHANGE_SETTINGS = "\nEnter your full name below: ";
+    private final String CHANGE_SETTINGS = "\nFull name has not been set yet. Enter your full name below: ";
     private final String MAIN_MENU = "\nCover Letter CLI Generator 1.0.";
     private final String SET_COMPANY = "\nWhat company are you applying for?";
     private final String SET_POSITION = "\nWhat position are you applying to?";
@@ -22,11 +22,10 @@ public class UI {
             System.out.println(MAIN_MENU);
             Scanner scanner = new Scanner(System.in);
 
-            //TODO if Settings are still default, prompt user to change them
-            if (Settings.isDefaultProfile()) {
+            if (generator.getSettings().isDefaultProfile()) {
                 System.out.println(CHANGE_SETTINGS);
-                Settings.setFullName(scanner.nextLine());
-                Settings.setDefaultProfile(false);
+                generator.getSettings().setFullName(scanner.nextLine());
+                generator.getSettings().setDefaultProfile(false);
             }
 
             System.out.println(SET_COMPANY);

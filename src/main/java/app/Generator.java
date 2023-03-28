@@ -9,14 +9,15 @@ import java.util.List;
 
 public class Generator {
 
+    private final Settings settings;
     private final String TEMPLATE_FILE_PATH = "src/main/resources/template/default.txt";
     private final String OUTPUT_FILE_DIRECTORY = "src/main/resources";
     private String company = "company";
     private String position = "position";
     private String hiringManager = "";
 
-    public Generator() {
-
+    public Generator(Settings settings) {
+        this.settings = settings;
     }
 
     public String getTEMPLATE_FILE_PATH() {
@@ -55,12 +56,17 @@ public class Generator {
         }
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
     public void generateCoverLetter() {
 
-        //TODO Format Date for Letter Head
-
-        String newFileName = String.format(OUTPUT_FILE_DIRECTORY + "\\" + "%s-%s-%s-%s-%s.txt",
-                "FIRSTNAME", "LASTNAME",position, company, LocalDate.now().toString());
+        String newFileName = String.format(OUTPUT_FILE_DIRECTORY + "\\" + "%s-%s-%s-%s.txt",
+                settings.getFullName().replaceAll(" ","-"),
+                position.replaceAll(" ","-"),
+                company.replaceAll(" ","-"),
+                formattedDate());
 
         StringBuilder coverLetter = new StringBuilder();
         try {
@@ -76,9 +82,9 @@ public class Generator {
 
         String editedCoverLetter = coverLetter.toString().replaceAll("COMPANY", company);
         editedCoverLetter = editedCoverLetter.replaceAll("POSITION", position);
-        editedCoverLetter = editedCoverLetter.replaceAll("DATE", LocalDate.now().toString());
+        editedCoverLetter = editedCoverLetter.replaceAll("DATE", formattedDate());
         editedCoverLetter = editedCoverLetter.replaceAll("HIRING_MANAGER", hiringManager);
-        editedCoverLetter = editedCoverLetter.replaceAll("FIRSTNAME_LASTNAME", Settings.getFullName());
+        editedCoverLetter = editedCoverLetter.replaceAll("FUlL_NAME", settings.getFullName());
 
 
         try {
@@ -94,5 +100,22 @@ public class Generator {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String formattedDate() {
+        String month = LocalDate.now().getMonth().toString();
+        month = month.substring(0,1).toUpperCase() + month.substring(1).toLowerCase();
+        int dayOfMonth = LocalDate.now().getDayOfMonth();
+        String dayOfMonthSuffix;
+        switch (dayOfMonth % 10) {
+            case 1: dayOfMonthSuffix = "st";
+            case 2: dayOfMonthSuffix = "nd";
+            case 3: dayOfMonthSuffix = "rd";
+            default: dayOfMonthSuffix = "th";
+        }
+        String day = dayOfMonth + dayOfMonthSuffix;
+        int year = LocalDate.now().getYear();
+
+        return String.format("%s %s, %d",month, day, year);
     }
 }
