@@ -17,6 +17,11 @@ public class UI {
         this.run = run;
     }
 
+    /**
+     * Main UI method checks if default settings are enabled to prompt user to change full name for
+     * cover letter signature and file name.
+     * Runs through rest of parameters before triggering a new cover letter.
+    */
     public void run() {
         while(run) {
             System.out.println(MAIN_MENU);
